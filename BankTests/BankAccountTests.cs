@@ -37,5 +37,30 @@ namespace C0725030_C730227
 
             // Assert is handled by the ExpectedException attribute on the test method.
         }
+
+        [TestMethod]
+        public void Debit_WhenAmountIsMoreThanBalance_ShouldThrowArgumentOutOfRange()
+        {
+            // Arrange
+            double beginningBalance = 11.99;
+            double debitAmount = 20.00;
+            BankAccount account = new BankAccount("Mr. Bryan Walton", beginningBalance);
+
+            // Act
+            try
+            {
+                account.Debit(debitAmount);
+            }
+            catch (ArgumentOutOfRangeException e)
+            {
+                // Assert
+                StringAssert.Contains(e.Message, BankAccount.DebitAmountExceedsBalanceMessage);
+            }
+                         
+        }
+
+        public const string DebitAmountExceedsBalanceMessage = "Debit amount exceeds balance";
+        public const string DebitAmountLessThanZeroMessage = "Debit amount is less than zero";
+
     }
 }
