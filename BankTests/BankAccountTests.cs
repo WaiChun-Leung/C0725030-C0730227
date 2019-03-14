@@ -24,7 +24,7 @@ namespace C0725030_C730227
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+       
         public void Debit_WhenAmountIsLessThanZero_ShouldThrowArgumentOutOfRange()
         {
             // Arrange
@@ -33,9 +33,18 @@ namespace C0725030_C730227
             BankAccount account = new BankAccount("Mr. Bryan Walton", beginningBalance);
 
             // Act
-            account.Debit(debitAmount);
+            try
+            {
+                account.Debit(debitAmount);
+            }
+            catch (ArgumentOutOfRangeException e)
+            {
+                // Assert
+                StringAssert.Contains(e.Message, BankAccount.DebitAmountLessThanZeroMessage);
+                return;
+            }
+            Assert.Fail("The excepted exception was not thrown.");
 
-            // Assert is handled by the ExpectedException attribute on the test method.
         }
 
         [TestMethod]
@@ -55,12 +64,12 @@ namespace C0725030_C730227
             {
                 // Assert
                 StringAssert.Contains(e.Message, BankAccount.DebitAmountExceedsBalanceMessage);
+                return;
             }
-                         
+            Assert.Fail("The excepted exception was not thrown.");       
         }
 
-        public const string DebitAmountExceedsBalanceMessage = "Debit amount exceeds balance";
-        public const string DebitAmountLessThanZeroMessage = "Debit amount is less than zero";
+        
 
     }
 }
